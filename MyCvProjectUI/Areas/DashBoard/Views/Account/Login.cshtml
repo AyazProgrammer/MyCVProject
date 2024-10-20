@@ -1,0 +1,25 @@
+﻿
+<header class="bg-dark text-white text-center sticky-top header-padding">
+    <h1>Login</h1>
+</header>
+
+<!-- Login Formu -->
+<div class="login-container">
+    
+    <form form asp-action="Login" asp-controller="Account" method="post">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Adresi</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Emailinizi daxil edin" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Şifrə</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Şifrənizi daxil edin" required>
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Daxil Ol</button>
+        </div>
+    </form>
+    <div class="text-center mt-3">
+        <a href="/Dashboard/Account/Register">Hesabınız yoxdur? Qeydiyyatdan keçin</a>
+    </div>
+</div>

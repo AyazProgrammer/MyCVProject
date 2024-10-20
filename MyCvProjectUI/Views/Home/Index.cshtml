@@ -1,0 +1,216 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model ProfileVM
+
+<div id="container">
+    <div id="content">
+        <div class="menu">
+            <ul class="tabs">
+                <li><a href="#profile" class="profile-tab">Profile</a></li>
+                <li><a href="#resume" class="resume-tab">Resume</a></li>
+                <li><a href="#portfolio" class="portfolio-tab">Portfolio</a></li>
+                <li><a href="#connect" class="connect-tab">Connect</a></li>
+            </ul>
+        </div>
+
+
+        <div id="profile">
+
+            @{
+                var abouts = Model.Abouts;
+                var aboutss = Model.Aboutss;
+
+
+                var about = abouts[0];
+                
+                
+
+
+
+                <div class="about" asp-controller="Product" asp-action="Detail" asp-route-id="@about.Id">
+                    <div class="profile-photo">
+                        <img src="@(abouts != null && aboutss.Count > 0 && !string.IsNullOrEmpty(aboutss[0].PhotoUrl) ? aboutss[0].PhotoUrl: "/images/profile-picture.png")"
+                             height="154" width="127" />
+                    </div>
+                    <h1>@about.Name @about.LastName</h1>
+                    <h3><i>Web Designer/Video Editor</i></h3>
+                    <p>@about.Description </p>
+                </div>
+
+
+                <ul class="basic-info">
+                    <li><h3>BASIC INFO </h3></li>
+                    <li><label>Name</label><span>@about.Name @about.LastName</span></li>
+                    <li><label>Birthdate</label><span>@about.Birthday</span></li>
+                    <li><label>Address</label><span>@about.Adress</span></li>
+                    <li><label>Phone</label><span>@about.Phone</span></li>
+                    <li><label>Email</label><span>@about.Email</span></li>
+                    <li><label>Website</label><span>@about.Website</span></li>
+                </ul>
+
+            }
+
+        </div>
+
+
+        <div id="resume">
+            <div class="resume-section">
+                <h3 class="main-heading">Educational Background</h3>
+                <ul class="date">
+
+
+                    @{
+                        var educations = Model.Educations.Take(2);
+
+                        if (educations != null)
+                        {
+                            foreach (var education in educations)
+                            {
+
+                                <li>
+                                    <div class="date-box">
+                                        <h4>@education.UniversityName<span class="date-range">@education.StartTime.Year - @education.EndTime.Year</span></h4>
+                                        <h5>@education.Speciality</h5>
+                                    </div>
+                                </li>
+
+                            }
+                        }
+                    }                   
+                   
+                    <div class="clear"></div>
+                </ul>
+
+
+                <h3 class="main-heading">Employment History</h3>
+                <ul class="date">
+                    @{
+                        var employements = Model.Employments.Take(2).ToList();
+
+                        if (employements != null)
+                        {
+                            foreach (var employement in employements)
+                            {
+
+                                <li>
+                                    <div class="date-box">
+                                        <h4>@employement.WorkName<span class="date-range">@employement.StartTime.Year - @employement.EndTime.Year</span></h4>
+                                        <h5>@employement.WorkOfficeName</h5>
+                                    </div>
+                                </li>
+
+                            }
+                        }
+                    }
+                   
+                </ul>
+            </div>
+
+
+            <div class="skills-section">
+                <h3 class="main-heading"><span>Technical Skills</span></h3>
+                <ul class="skills">
+                    @{
+                        var skills = Model.Skills.Take(4).ToList();
+
+                        if (skills != null)
+                        {
+                            foreach (var skill in skills)
+                            {
+
+                                <li> <h4>* @skill.SkillsName</h4></li>
+
+                            }
+                        }
+                    }
+               
+                </ul>
+            </div>
+
+            <div class="skills-section">
+                <h3 class="main-heading"><span>Certificates</span></h3>
+                <ul class="skills">
+                    @{
+                        var certificates = Model.Certificates.Take(2).ToList();
+
+                        if(certificates != null && certificates.Count>0)
+                        {
+                            foreach (var certificate in certificates)
+                            {
+
+                                <li><h4>* <a href="@certificate.CertificateUrl" target="_blank">@certificate.CertificateName</a></h4></li>
+
+                            }
+                        }                      
+
+                    }
+                   
+                </ul>
+            </div>
+
+
+
+
+
+
+        </div>
+
+        <div id="portfolio">
+            <div class="heading">My Latest Projects</div>
+            <ul id="portfolios">
+
+                @{
+                    var products = Model.Products;
+
+                    if (products != null)
+                    {
+                        foreach (var product in products)
+                        {
+
+                            <li>
+                                <a href="https://www.google.az" target="_blank">
+                                    <img src="@product.PhotoUrl" height="180" width="240">
+                                    <h2 class="portfolio-title">@product.ProjectName</h2>
+                                    <span class="desc">@product.ProjectType</span>
+                                </a>
+                            </li>
+
+                        }
+                    }
+                }
+                
+
+            </ul>
+        </div>
+
+
+        <div id="connect">
+            <div class="contact-form">
+                <h3 class="main-heading"><span>Connect With Us</span></h3>
+                <form asp-action="Index" method="post" id="connectform">
+                    <p>
+                        <label for="name">Name</label> <input type="text" name="Name" class="input">
+                    </p>
+                    <p>
+                        <label for="phone">Phone</label> <input type="text" name="Phone" class="input">
+                    </p>
+                    <p>
+                        <label for="email">Email</label> <input type="text" name="Email" class="input">
+                    </p>
+                    <p>
+                        <label for="message">Message</label> <textarea name="MessageInfo" cols="50" rows="2" class="textarea"></textarea>
+                    </p>
+                    <input type="submit" name="submit" value="Send Now" class="submit">
+                </form>
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+</div>
+

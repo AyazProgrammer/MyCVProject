@@ -1,0 +1,112 @@
+﻿@model EmployementVM
+
+<div class="container my-5">
+    <h2>Employments</h2>
+
+    <!-- Add button -->
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editEmploymentModal" onclick="openAddModal()">
+            Add New Employment
+        </button>
+    </div>
+
+    @if (Model.Employments != null && Model.Employments.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Work Office Name</th>
+                    <th>Work Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employment in Model.Employments)
+                {
+                    <tr>
+                        <td>@employment.Id</td>
+                        <td>@employment.WorkOfficeName</td>
+                        <td>@employment.WorkName</td>
+                        <td>@employment.StartTime.ToString("g")</td>
+                        <td>@employment.EndTime.ToString("g")</td>
+                        <td>
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editEmploymentModal"
+                                    onclick="openEditModal('@employment.Id', '@employment.WorkOfficeName', '@employment.WorkName', '@employment.StartTime.ToString("o")', '@employment.EndTime.ToString("o")')">
+                                Edit
+                            </button>
+                            <form asp-action="EmployementOperation" asp-controller="Employement" method="post" style="display:inline;">
+                                <input type="hidden" name="Id" value="@employment.Id" />
+                                <input type="hidden" name="actionType" value="Delete" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Modal -->
+    <div class="modal fade" id="editEmploymentModal" tabindex="-1" aria-labelledby="editEmploymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmploymentModalLabel">Edit Employment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEmploymentForm" asp-action="EmployementOperation" asp-controller="Employement" method="post">
+                        <input type="hidden" id="modalId" name="Id" />
+                        <input type="hidden" id="modalActionType" name="actionType" value="Add" />
+                        <div class="mb-3">
+                            <label for="modalWorkOfficeName" class="form-label">Work Office Name</label>
+                            <input type="text" class="form-control" id="modalWorkOfficeName" name="WorkOfficeName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalWorkName" class="form-label">Work Name</label>
+                            <input type="text" class="form-control" id="modalWorkName" name="WorkName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalStartTime" class="form-label">Start Time</label>
+                            <input type="datetime-local" class="form-control" id="modalStartTime" name="StartTime" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalEndTime" class="form-label">End Time</label>
+                            <input type="datetime-local" class="form-control" id="modalEndTime" name="EndTime" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="modalSubmitButton">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAddModal() {
+            document.getElementById('modalId').value = ''; // Clear the ID
+            document.getElementById('modalWorkOfficeName').value = ''; // Clear the Work Office Name
+            document.getElementById('modalWorkName').value = ''; // Clear the Work Name
+            document.getElementById('modalStartTime').value = ''; // Clear the Start Time
+            document.getElementById('modalEndTime').value = ''; // Clear the End Time
+
+            document.getElementById('modalActionType').value = 'Add'; // Set action to Add
+            document.getElementById('modalSubmitButton').innerText = 'Add'; // Change button text
+            document.getElementById('editEmploymentModalLabel').innerText = 'Add Employment'; // Change modal title
+        }
+
+        function openEditModal(id, workOfficeName, workName, startTime, endTime) {
+            document.getElementById('modalId').value = id;
+            document.getElementById('modalWorkOfficeName').value = workOfficeName;
+            document.getElementById('modalWorkName').value = workName;
+            document.getElementById('modalStartTime').value = startTime; // Format the date to match input
+            document.getElementById('modalEndTime').value = endTime; // Format the date to match input
+
+            document.getElementById('modalActionType').value = 'Update'; // Set action to Update
+            document.getElementById('modalSubmitButton').innerText = 'Update'; // Change button text
+            document.getElementById('editEmploymentModalLabel').innerText = 'Edit Employment'; // Change modal title
+        }
+    </script>
+</div>

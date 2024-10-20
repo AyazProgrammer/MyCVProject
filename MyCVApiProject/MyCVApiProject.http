@@ -1,0 +1,6 @@
+@MyCVApiProject_HostAddress = http://localhost:5145
+
+GET {{MyCVApiProject_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

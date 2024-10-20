@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+    Layout = "_AdminLayout";
+}
+@model ProfileVM
+
+<div class="container my-5">
+    <h2>Mesajlar</h2>
+
+    @{
+        var messages = Model.Message;
+
+        @if (messages != null && messages.Count > 0)
+        {
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>MessageInfo</th>
+                        </tr>
+                    </thead>
+                </table>
+                <!-- Yalnızca satırlar için kaydırma -->
+                <div style="max-height: 250px; overflow-y: auto;">
+                    <table class="table table-bordered">
+                        <tbody>
+                            @foreach (var message in messages)
+                            {
+                                <tr>
+                                    <td>@message.Id</td>
+                                    <td>@message.Name</td>
+                                    <td>@message.Phone</td>
+                                    <td>@message.Email</td>
+                                    <td>
+                                        <div style="width:100%; max-height:50px; overflow:auto">
+                                            @message.MessageInfo
+                                        </div>
+                                    </td>
+                                        <td>
+                                        <form asp-action="Index" asp-controller="Home"  method="post" >
+                                            <input type="hidden" name="id" value="@message.Id" />
+                                            <button type="submit" class="btn btn-danger">Sil</button>
+                                        </form>
+                                      </td>
+                                </tr> 
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+    }
+
+</div>
+
+
+
+
+
+
+
+<div class="container my-5">
+    <h2>Haqqimda </h2>
+
+    @{
+        var abouts = Model.Abouts;
+
+        if (abouts != null && abouts.Count > 0)
+        {
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>LastName</th>
+                        <th>Adress</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Website</th>
+                        <th>Description</th>
+                       
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var about in abouts)
+                        {
+                            {
+
+                                <tr>
+                                    <td>@about.Id</td>
+                                    <td>@about.Name</td>
+                                    <td>@about.LastName</td>
+                                    <td>@about.Adress</td>
+                                    <td>@about.Phone</td>
+                                    <td>@about.Email</td>
+                                    <td>@about.Website</td>
+                                    <td>
+                                        <div style="width:100%; max-height:100px; overflow:auto">
+                                            @about.Description;
+                                        </div>
+                                    </td>
+                                   
+                                   
+                                    
+
+                                </tr>
+
+                            }
+                        }
+
+                    }
+
+
+                </tbody>
+            </table>
+
+        }
+    }
+</div>
+
+<div class="container my-5">
+    <h2>Proyektler </h2>
+
+    @{
+        var projects = Model.ProductsAll;
+
+        if (projects != null && projects.Count > 0)
+        {
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>ShortDesc</th>
+                        <th>Feature</th>
+                        <th>Description</th>
+
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var project in projects)
+                        {
+                            {
+
+                                <tr>
+                                    <td>@project.Id</td>
+                                    <td>@project.ProjectName</td>
+                                    <td>@project.ProjectType</td>
+                                 
+                                    <td>@project.IsFeatured</td>
+                                   
+                                    <td>
+                                        <div style="width:100%; max-height:100px; overflow:auto">
+                                            @project.Description;
+                                        </div>
+                                    </td>
+
+
+
+
+                                </tr>
+
+                            }
+                        }
+
+                    }
+
+
+                </tbody>
+            </table>
+
+        }
+    }
+</div>
+
+
+
+

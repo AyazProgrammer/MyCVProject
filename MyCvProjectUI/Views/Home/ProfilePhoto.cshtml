@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ProfileVM
+<h4>Create page</h4>
+<div class="container">
+    <div class="row">
+        <div class="col-8 m-auto">
+            <form asp-action="ProfilePhoto" enctype="multipart/form-data" method="post">
+                <div class="card mt-5">
+                    <div class="card-header">
+                        ProductImage Create
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input class="form-control" type="number" name="AboutId" id="AboutId" />
+
+                            <input class="form-control" accept="image/png, image/gif, image/jpeg" type="file" name="Photo" id="Photo" />
+                            <br />
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" class="btn btn-primary" value="Submit" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

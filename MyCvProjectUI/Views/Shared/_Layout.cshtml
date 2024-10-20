@@ -1,0 +1,39 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Responsive CV Website</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="~/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="~/http://fonts.googleapis.com/css?family=Open+Sans:400,600,300,800,700,400italic|PT+Serif:400,400italic" />
+    <script type="text/javascript" src="~/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery.easytabs.min.js"></script>
+</head>
+<body>
+
+
+    
+    <main>
+        @RenderBody()
+    </main>
+    <script>
+        jQuery(document).ready(function () {
+            var $content = $("#content");
+            $content.easytabs({
+                animate: true,
+                transitionIn: 'slideDown',
+                transitionOut: 'slideUp',
+                animationSpeed: 500,
+                tabs: "> .menu > ul > li",
+                tabActiveClass: 'active',
+            });
+        });
+
+    </script>
+
+</body>
+</html>
+
+@await RenderSectionAsync("Scripts", required: false)

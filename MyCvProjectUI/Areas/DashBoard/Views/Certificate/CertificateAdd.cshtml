@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+    Layout = "_AdminLayout";
+}
+@model CertificateVM
+
+<div class="container my-5">
+    <h2>Certificates</h2>
+
+    <!-- Add button on top of the table -->
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editCertificateModal"
+                onclick="openAddModal()">
+            Add New Certificate
+        </button>
+    </div>
+
+    @if (Model.Certificates != null && Model.Certificates.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Certificate Name</th>
+                    <th>Certificate URL</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var certificate in Model.Certificates)
+                {
+                    <tr>
+                        <td>@certificate.Id</td>
+                        <td>@certificate.CertificateName</td>
+                        <td>@certificate.CertificateUrl</td>
+                        <td>
+                            <!-- Edit button to open modal -->
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editCertificateModal"
+                                    onclick="openEditModal('@certificate.Id', '@certificate.CertificateName', '@certificate.CertificateUrl')">
+                                Edit
+                            </button>
+
+                            <!-- Delete form -->
+                            <form asp-action="CertificateAdd" asp-controller="Certificate" method="post" style="display:inline;">
+                                <input type="hidden" name="Id" value="@certificate.Id" />
+                                <input type="hidden" name="actionType" value="Delete" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Modal -->
+    <div class="modal fade" id="editCertificateModal" tabindex="-1" aria-labelledby="editCertificateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCertificateModalLabel">Edit Certificate</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCertificateForm" asp-action="CertificateAdd" asp-controller="Certificate" method="post">
+                        <input type="hidden" id="modalId" name="Id" />
+                        <input type="hidden" id="modalActionType" name="actionType" value="Add" />
+                        <div class="mb-3">
+                            <label for="modalCertificateName" class="form-label">Certificate Name</label>
+                            <input type="text" class="form-control" id="modalCertificateName" name="CertificateName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalCertificateUrl" class="form-label">Certificate URL</label>
+                            <input type="url" class="form-control" id="modalCertificateUrl" name="CertificateUrl" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="modalSubmitButton">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAddModal() {
+            document.getElementById('modalId').value = '';
+            document.getElementById('modalCertificateName').value = '';
+            document.getElementById('modalCertificateUrl').value = '';
+
+            document.getElementById('modalActionType').value = 'Add';
+            document.getElementById('modalSubmitButton').innerText = 'Add';
+            document.getElementById('editCertificateModalLabel').innerText = 'Add Certificate';
+        }
+
+        function openEditModal(id, name, url) {
+            document.getElementById('modalId').value = id;
+            document.getElementById('modalCertificateName').value = name;
+            document.getElementById('modalCertificateUrl').value = url;
+
+            document.getElementById('modalActionType').value = 'Update';
+            document.getElementById('modalSubmitButton').innerText = 'Update';
+            document.getElementById('editCertificateModalLabel').innerText = 'Edit Certificate';
+        }
+    </script>
+</div>

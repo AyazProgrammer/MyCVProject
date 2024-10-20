@@ -1,0 +1,116 @@
+﻿@model EducationVM
+
+<div class="container my-5">
+    <h2>Educations</h2>
+
+    <!-- Add button on top of the table -->
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editEducationModal"
+                onclick="openAddModal()">
+            Add New Education
+        </button>
+    </div>
+
+    @if (Model.Educations != null && Model.Educations.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Speciality</th>
+                    <th>University Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var education in Model.Educations)
+                {
+                    <tr>
+                        <td>@education.Id</td>
+                        <td>@education.Speciality</td>
+                        <td>@education.UniversityName</td>
+                        <td>@education.StartTime.ToShortDateString()</td>
+                        <td>@education.EndTime.ToShortDateString()</td>
+                        <td>
+                            <!-- Edit button to open modal -->
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editEducationModal"
+                                    onclick="openEditModal('@education.Id', '@education.Speciality', '@education.UniversityName', '@education.StartTime.ToString("yyyy-MM-dd")', '@education.EndTime.ToString("yyyy-MM-dd")')">
+                                Edit
+                            </button>
+
+                            <!-- Delete form -->
+                            <form asp-action="EducationOperation" asp-controller="Education" method="post" style="display:inline;">
+                                <input type="hidden" name="Id" value="@education.Id" />
+                                <input type="hidden" name="actionType" value="Delete" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="editEducationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEducationModalLabel">Edit Education</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEducationForm" asp-action="EducationOperation" asp-controller="Education" method="post">
+                        <input type="hidden" id="modalId" name="Id" />
+                        <input type="hidden" id="modalActionType" name="actionType" value="Add" /> <!-- actionType Add/Update olarak değişecek -->
+                        <div class="mb-3">
+                            <label for="modalSpeciality" class="form-label">Speciality</label>
+                            <input type="text" class="form-control" id="modalSpeciality" name="Speciality" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalUniversityName" class="form-label">University Name</label>
+                            <input type="text" class="form-control" id="modalUniversityName" name="UniversityName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalStartTime" class="form-label">Start Time</label>
+                            <input type="date" class="form-control" id="modalStartTime" name="StartTime" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modalEndTime" class="form-label">End Time</label>
+                            <input type="date" class="form-control" id="modalEndTime" name="EndTime" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="modalSubmitButton">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAddModal() {
+            document.getElementById('modalId').value = '';
+            document.getElementById('modalSpeciality').value = '';
+            document.getElementById('modalUniversityName').value = '';
+            document.getElementById('modalStartTime').value = '';
+            document.getElementById('modalEndTime').value = '';
+
+            document.getElementById('modalActionType').value = 'Add';
+            document.getElementById('modalSubmitButton').innerText = 'Add';
+            document.getElementById('editEducationModalLabel').innerText = 'Add Education';
+        }
+
+        function openEditModal(id, speciality, universityName, startTime, endTime) {
+            document.getElementById('modalId').value = id;
+            document.getElementById('modalSpeciality').value = speciality;
+            document.getElementById('modalUniversityName').value = universityName;
+            document.getElementById('modalStartTime').value = startTime;
+            document.getElementById('modalEndTime').value = endTime;
+
+            document.getElementById('modalActionType').value = 'Update';
+            document.getElementById('modalSubmitButton').innerText = 'Update';
+            document.getElementById('editEducationModalLabel').innerText = 'Edit Education';
+        }
+    </script>

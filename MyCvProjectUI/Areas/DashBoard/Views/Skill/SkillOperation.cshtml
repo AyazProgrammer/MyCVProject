@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+    Layout = "_AdminLayout";
+}
+@model SkillVM
+
+<div class="container my-5">
+    <h2>Skills</h2>
+
+    <!-- Add button on top of the table -->
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editSkillModal"
+                onclick="openAddModal()">
+            Add New Skill
+        </button>
+    </div>
+
+    @if (Model.Skills != null && Model.Skills.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Skill Name</th>
+                    <th>Actions</th> <!-- Removed IsDeleted column -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var skill in Model.Skills)
+                {
+                    <tr>
+                        <td>@skill.Id</td>
+                        <td>@skill.SkillsName</td>
+                        <td>
+                            <!-- Edit button to open modal -->
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editSkillModal"
+                                    onclick="openEditModal('@skill.Id', '@skill.SkillsName')">
+                                <!-- Removed IsDeleted -->
+                                Edit
+                            </button>
+
+                            <!-- Delete form -->
+                            <form asp-action="SkillOperation" asp-controller="Skill" method="post" style="display:inline;">
+                                <input type="hidden" name="Id" value="@skill.Id" />
+                                <input type="hidden" name="actionType" value="Delete" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Modal -->
+    <div class="modal fade" id="editSkillModal" tabindex="-1" aria-labelledby="editSkillModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSkillModalLabel">Edit Skill</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSkillForm" asp-action="SkillOperation" asp-controller="Skill" method="post">
+                        <input type="hidden" id="modalId" name="Id" />
+                        <input type="hidden" id="modalActionType" name="actionType" value="Add" /> <!-- actionType will be used for both Add and Update -->
+                        <div class="mb-3">
+                            <label for="modalSkillsName" class="form-label">Skill Name</label>
+                            <input type="text" class="form-control" id="modalSkillsName" name="SkillsName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="modalSubmitButton">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAddModal() {
+            document.getElementById('modalId').value = ''; // Clear the ID
+            document.getElementById('modalSkillsName').value = ''; // Clear the Skill name
+
+            document.getElementById('modalActionType').value = 'Add'; // Set action to Add
+            document.getElementById('modalSubmitButton').innerText = 'Add'; // Change button text
+            document.getElementById('editSkillModalLabel').innerText = 'Add Skill'; // Change modal title
+        }
+
+        function openEditModal(id, skillsName) { // Removed isDeleted
+            document.getElementById('modalId').value = id;
+            document.getElementById('modalSkillsName').value = skillsName;
+
+            document.getElementById('modalActionType').value = 'Update'; // Set action to Update
+            document.getElementById('modalSubmitButton').innerText = 'Update'; // Change button text
+            document.getElementById('editSkillModalLabel').innerText = 'Edit Skill'; // Change modal title
+        }
+    </script>
+</div>
